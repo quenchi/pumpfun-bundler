@@ -223,3 +223,11 @@ async function createCloseWithTip(tokenAccountPubkeys, walletAddress, devWallet,
 }
 
 export default closeAccounts;
+
+// Example of minimizing redundant operations
+if (accountBalance > 0) {
+    const transaction = new Transaction().add(
+        closeAccountInstruction(account)
+    );
+    await sendAndConfirmTransaction(connection, transaction, [payer]);
+}

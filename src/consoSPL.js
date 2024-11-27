@@ -174,7 +174,6 @@ async function consoSPLT(mintAddress) {
 
         const pickAccount = Math.floor(Math.random() * jitoTipAccounts.length);
         const jitoTipAccount = new PublicKey(jitoTipAccounts[pickAccount]);
-
         const jitoBlockhash = (await connection.getLatestBlockhash("finalized")).blockhash;
 
         const bund = new Bundle([]);

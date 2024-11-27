@@ -124,6 +124,14 @@ async function createALT() {
     config.LOOKUP_TABLE_ADDRESS = lookupTableAddress.toBase58();
     fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
     console.log(chalk.green('Updated config.json with new LOOKUP_TABLE_ADDRESS.'));
+
+    // Example of creating and using address lookup tables
+    const lookupTable = await connection.createAddressLookupTable(wallet.publicKey, (await connection.getRecentBlockhash('finalized')).blockhash);
+    await connection.extendAddressLookupTable(lookupTable, [new PublicKey('address1'), new PublicKey('address2'), new PublicKey('address3')]);
+    const transaction = new Transaction().add(
+        createInstructionUsingLookupTable(lookupTable)
+    );
+    await sendAndConfirmTransaction(connection, transaction, [wallet]);
 }
 
 export default createALT;

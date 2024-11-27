@@ -1,4 +1,4 @@
-import { PublicKey, Keypair, Connection, TransactionInstruction, TransactionMessage, VersionedTransaction, SystemProgram } from '@solana/web3.js';
+import { PublicKey, Keypair, Connection, TransactionInstruction, TransactionMessage, VersionedTransaction, SystemProgram, Transaction, sendAndConfirmTransaction } from '@solana/web3.js';
 import fs from 'fs';
 import bs58 from 'bs58';
 
@@ -98,6 +98,13 @@ async function createSellTXWithTip(mint, bondingCurve, aBondingCurve, pump, wall
         toPubkey: tipAccount,
         lamports: jitoTipLamports
     });
+
+    // Example of combining multiple instructions into a single transaction
+    const transaction = new Transaction().add(
+        swapOut,
+        tipIX
+    );
+    await sendAndConfirmTransaction(connection, transaction, [payer]);
 
     // Create TransactionMessage
     const messageV0 = new TransactionMessage({
